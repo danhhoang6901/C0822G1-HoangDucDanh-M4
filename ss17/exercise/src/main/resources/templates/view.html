@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chi tiết Blog</title>
+</head>
+<body>
+<div th:align="center">
+    <h1>Xem chi tiết câu hỏi</h1>
+    <a th:href="@{/blog/list}" role="button" class="btn btn-primary">Trở lại danh sách</a><br>
+    <label style="font-weight: bold">Tiêu đề: </label>
+    <label th:text="${blogs.title}"></label><br>
+    <label style="font-weight: bold">Nội dung: </label>
+    <label th:text="${blogs.dateSubmitted}"></label><br>
+    <label style="font-weight: bold">Phản hồi: </label>
+    <label th:text="${blogs.author}"></label><br>
+    <label style="font-weight: bold">Loại câu hỏi: </label>
+    <label th:text="${blogs.content}"></label><br>
+    <label style="font-weight: bold">Thể loại: </label>
+    <label th:text="${blogs.category.name}"></label><br>
+</div>
+</body>
+</html>

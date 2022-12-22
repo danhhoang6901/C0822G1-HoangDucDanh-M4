@@ -1,31 +1,52 @@
 package com.codegym.model;
 
+import org.hibernate.annotations.SQLDelete;
+
 import javax.persistence.*;
 
 @Entity
+//@SQLDelete(sql = "update blog set status = 0 where id = ?")
 public class Blog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     private String title;
     private String dateSubmitted;
     private String author;
     private String content;
+    private boolean status;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 
     public Blog() {
     }
 
-    public Blog(int id, String title, String dateSubmitted, String author, String content, Category category) {
-        this.id = id;
-        this.title = title;
-        this.dateSubmitted = dateSubmitted;
-        this.author = author;
-        this.content = content;
-        this.category = category;
+//    public Blog(Integer id, String title, String dateSubmitted, String author, String content, int status, Category category) {
+//        this.id = id;
+//        this.title = title;
+//        this.dateSubmitted = dateSubmitted;
+//        this.author = author;
+//        this.content = content;
+//        this.status = status;
+//        this.category = category;
+//    }
+
+//    public int getStatus() {
+//        return status;
+//    }
+//
+//    public void setStatus(int status) {
+//        this.status = status;
+//    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     public Category getCategory() {
@@ -36,11 +57,11 @@ public class Blog {
         this.category = category;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

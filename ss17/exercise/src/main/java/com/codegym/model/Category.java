@@ -7,26 +7,26 @@ import java.util.Set;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     private String name;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category")
     private Set<Blog> blogs;
 
     public Category() {
     }
 
-    public Category(int id, String name, Set<Blog> blogs) {
+    public Category(Integer id, String name, Set<Blog> blogs) {
         this.id = id;
         this.name = name;
         this.blogs = blogs;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

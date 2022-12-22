@@ -72,7 +72,7 @@ public class BlogController {
         return "redirect:/blog/list";
     }
 
-    @GetMapping("/view")
+    @PostMapping("/view")
     public String viewBlog(@RequestParam("id") int id, Model model) {
         model.addAttribute("blogs", blogService.findById(id));
         return "list";

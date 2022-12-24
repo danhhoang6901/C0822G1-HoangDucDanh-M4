@@ -44,8 +44,17 @@ public class BlogController {
 
     @PostMapping("/create")
     public String createBlog(@ModelAttribute("blogs") Blog blog, RedirectAttributes redirectAttributes) {
-        blogService.save(blog);
-        redirectAttributes.addFlashAttribute("msg", "Thêm mới thành công");
+        List<Blog> blogs = blogService.findAll();
+        for (Blog blog1 : blogs) {
+            if (blog1.getTitle().contains(blog.getTitle())) {
+                redirectAttributes.addFlashAttribute("msg", "Tiêu đề đã tồn tại");
+                break;
+            } else {
+
+                blogService.save(blog);
+                redirectAttributes.addFlashAttribute("msg", "Thêm mới thành công");
+            }
+        }
         return "redirect:/blog/list";
     }
 
@@ -60,8 +69,16 @@ public class BlogController {
 
     @PostMapping("/edit")
     public String editBlog(@ModelAttribute("blogs") Blog blog, RedirectAttributes redirectAttributes) {
-        blogService.save(blog);
-        redirectAttributes.addFlashAttribute("msg", "Chỉnh sửa thành công");
+        List<Blog> blogs = blogService.findAll();
+        for (Blog blog1 : blogs) {
+            if (blog1.getTitle().contains(blog.getTitle())) {
+                redirectAttributes.addFlashAttribute("msg", "Tiêu đề đã tồn tại");
+                break;
+            } else {
+                blogService.save(blog);
+                redirectAttributes.addFlashAttribute("msg", "Chỉnh sửa thành công");
+            }
+        }
         return "redirect:/blog/list";
     }
 

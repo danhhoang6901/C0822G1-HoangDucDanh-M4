@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface IBlogService {
 
+    List<Blog> findAll();
+
     Page<Blog> findByTitleContaining(Pageable pageable, String title);
 
     Page<Blog> findAll(Pageable pageable);

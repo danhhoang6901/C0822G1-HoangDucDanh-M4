@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List Customer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="vh-100">
+    <nav class="navbar navbar-light bg-light" style="height: 20%">
+        <div class="container-fluid">
+            <img src="https://cdn.azvd.asia/images/furama/logo-m.png" alt="" width="200" height="100"
+                 class="d-inline-block align-text-top">
+            <h1>FURAMA</h1>
+        </div>
+    </nav>
+    <nav class="navbar navbar-expand-lg navbar-light bg-secondary" style="height: 10%">
+        <div class="container-fluid" style="margin-left: 40px">
+            <a class="navbar-brand" th:href="@{/}">Home</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1"
+                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Employee
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown1">
+                            <li><a class="dropdown-item">List Employee</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a style="font-weight: bold" class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Customer
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" th:href="@{/customer/list}">List Customer</a></li>
+                        </ul>
+                    </li>
+                    <li  class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2"
+                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Facility
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                            <li><a class="dropdown-item" th:href="@{/facility/list}">List Facility</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown4"
+                           role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            Contract
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown4">
+                            <li><a th:href="@{/contract/list}" class="dropdown-item">List Contract</a></li>
+                        </ul>
+                    </li>
+                </ul>
+<!--                <form  th:action="@{/customer/list}" class="d-flex">-->
+<!--                    <input th:type="text" name="name" class="form-control me-2" type="search" placeholder="Search"-->
+<!--                           aria-label="Search Name">-->
+<!--                    <input th:type="text" name="email" class="form-control me-2" type="search" placeholder="Search"-->
+<!--                           aria-label="Search Email">-->
+<!--                    <select th:name="customerType">-->
+<!--                        <option value="" selected>-->
+<!--                            Choose Customer Type-->
+<!--                        </option>-->
+<!--                        <option-->
+<!--                                th:each="item : ${customerTypeList}"-->
+<!--                                th:value="${item.name}" th:text="${item.name}">-->
+<!--                        </option>-->
+<!--                    </select>-->
+<!--                    <button class="btn btn-primary" type="submit">Search</button>-->
+<!--                </form>-->
+            </div>
+        </div>
+    </nav>
+    <div style="    height: 70%">
+        <div align="center">
+            <h1>List Customer</h1>
+            <a th:href="@{/customer/create}" role="button" class="btn btn-primary" sec:authorize="hasRole('ADMIN')">Create
+                Customer</a>
+            <p style="font-weight: bold;color: red" th:text="${msg}"></p>
+        </div>
+        <table class="table table-striped table-bordered" style="width: 100%;">
+            <thead>
+            <tr>
+                <th scope="col">STT</th>
+                <th scope="col">Name</th>
+                <th scope="col">Date of birth</th>
+                <th scope="col">Gender</th>
+                <th scope="col">Id Card</th>
+                <th scope="col">Phone Number</th>
+                <th scope="col">Email</th>
+                <th scope="col">Address</th>
+                <th scope="col">Customer Type</th>
+<!--                <th scope="col" sec:authorize="hasRole('ADMIN')">Edit</th>-->
+<!--                <th scope="col" sec:authorize="hasRole('ADMIN')">Delete</th>-->
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="customer, stt : ${customers}">
+                <th scope="row" th:text="${stt.count} + ${customers.number} * ${customers.size}"></th>
+                <td th:text="${customer.name}"></td>
+                <td th:text="${customer.dateOfBirth}"></td>
+                <td th:if="${customer.gender} == 0" th:text="Female"></td>
+                <td th:if="${customer.gender} == 1" th:text="Male"></td>
+                <td th:if="${customer.gender} == 2" th:text="LGBT"></td>
+                <td th:text="${customer.idCard}"></td>
+                <td th:text="${customer.phoneNumber}"></td>
+                <td th:text="${customer.email}"></td>
+                <td th:text="${customer.address}"></td>
+                <td th:text="${customer.customerType.name}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <nav aria-label="..." class="justify-content-center d-flex">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" th:href="@{'/customer/list'(page=${customers.number - 1})}"
+                       th:if="${customers.hasPrevious()}">&laquo;</a>
+                </li>
+                <li class="page-item disabled" th:unless="${customers.hasPrevious()}">
+                    <a class="page-link">&laquo;</a>
+                </li>
+
+                <li class="page-item">
+                    <a class="page-link" th:href="@{'/customer/list'(page=${customers.number - 1})}"
+                       th:if="${customers.hasPrevious()}" th:text="${customers.number}"></a>
+                </li>
+
+                <li class="page-item active">
+                    <a class="page-link" th:href="@{'/customer/list'(page=${customers.number})}"
+                       th:text="${customers.number + 1}">
+                        <span class="sr-only">(trang hiện tại)</span></a>
+                </li>
+
+                <li class="page-item">
+                    <a class="page-link" th:href="@{'/customer/list'(page=${customers.number+1})}"
+                       th:text="${customers.number+2}" th:if="${customers.hasNext()}"></a>
+                </li>
+
+                <li class="page-item">
+                    <a class="page-link" th:href="@{'/customer/list'(page=${customers.number+1} )}"
+                       th:if="${customers.hasNext()}">&raquo;</a>
+                </li>
+                <li class="page-item disabled" th:unless="${customers.hasNext()}">
+                    <a class="page-link">&raquo;</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<footer class="text-center text-lg-start bg-light text-muted">
+    <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+        <div>
+            <a href="" class="me-4 text-reset">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="" class="me-4 text-reset">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="" class="me-4 text-reset">
+                <i class="fab fa-google"></i>
+            </a>
+            <a href="" class="me-4 text-reset">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="" class="me-4 text-reset">
+                <i class="fab fa-linkedin"></i>
+            </a>
+            <a href="" class="me-4 text-reset">
+                <i class="fab fa-github"></i>
+            </a>
+        </div>
+    </section>
+    <section class="">
+        <div class="container text-center text-md-start mt-5">
+            <div class="row mt-3">
+                <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                    <h6 class="text-uppercase fw-bold mb-4">
+                        <i class="fas fa-gem me-3"></i>Company name
+                    </h6>
+                    <p>
+                        Here you can use rows and columns to organize your footer content. Lorem ipsum
+                        dolor sit amet, consectetur adipisicing elit.
+                    </p>
+                </div>
+                <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                    <h6 class="text-uppercase fw-bold mb-4">
+                        Products
+                    </h6>
+                    <p>
+                        <a href="#!" class="text-reset">Angular</a>
+                    </p>
+                    <p>
+                        <a href="#!" class="text-reset">React</a>
+                    </p>
+                    <p>
+                        <a href="#!" class="text-reset">Vue</a>
+                    </p>
+                    <p>
+                        <a href="#!" class="text-reset">Laravel</a>
+                    </p>
+                </div>
+                <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+                    <h6 class="text-uppercase fw-bold mb-4">
+                        Useful links
+                    </h6>
+                    <p>
+                        <a href="#!" class="text-reset">Pricing</a>
+                    </p>
+                    <p>
+                        <a href="#!" class="text-reset">Settings</a>
+                    </p>
+                    <p>
+                        <a href="#!" class="text-reset">Orders</a>
+                    </p>
+                    <p>
+                        <a href="#!" class="text-reset">Help</a>
+                    </p>
+                </div>
+                <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                    <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
+                    <p><i class="fas fa-home me-3"></i> Da Nang, DN 50000, VN</p>
+                    <p>
+                        <i class="fas fa-envelope me-3"></i>
+                        danhhoang0196@gmail.com
+                    </p>
+                    <p><i class="fas fa-phone me-3"></i> + 84 123 456 789</p>
+                    <p><i class="fas fa-print me-3"></i> + 01 234 567 89</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+        © 2022 Copyright:
+        <a class="text-reset fw-bold" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+    </div>
+</footer>
+</body>
+</html>
+</html>

@@ -1,6 +1,9 @@
 package com.codegym.model.customer;
 
+import com.codegym.model.contract.Contract;
+
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Customer {
@@ -20,10 +23,13 @@ public class Customer {
     @JoinColumn(name = "customer_type_id", referencedColumnName = "id")
     private CustomerType customerType;
 
+    @OneToMany(mappedBy = "customer")
+    private Set<Contract> contracts;
+
     public Customer() {
     }
 
-    public Customer(int id, String name, String dateOfBirth, int gender, String idCard, String phoneNumber, String email, String address, boolean status, CustomerType customerType) {
+    public Customer(int id, String name, String dateOfBirth, int gender, String idCard, String phoneNumber, String email, String address, boolean status, CustomerType customerType, Set<Contract> contracts) {
         this.id = id;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
@@ -34,6 +40,15 @@ public class Customer {
         this.address = address;
         this.status = status;
         this.customerType = customerType;
+        this.contracts = contracts;
+    }
+
+    public Set<Contract> getContracts() {
+        return contracts;
+    }
+
+    public void setContracts(Set<Contract> contracts) {
+        this.contracts = contracts;
     }
 
     public boolean isStatus() {

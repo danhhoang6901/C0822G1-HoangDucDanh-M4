@@ -47,7 +47,7 @@
                             <li><a class="dropdown-item" th:href="@{/customer/list}">List Customer</a></li>
                         </ul>
                     </li>
-                    <li  class="nav-item dropdown">
+                    <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2"
                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Facility
@@ -67,22 +67,22 @@
                         </ul>
                     </li>
                 </ul>
-<!--                <form  th:action="@{/customer/list}" class="d-flex">-->
-<!--                    <input th:type="text" name="name" class="form-control me-2" type="search" placeholder="Search"-->
-<!--                           aria-label="Search Name">-->
-<!--                    <input th:type="text" name="email" class="form-control me-2" type="search" placeholder="Search"-->
-<!--                           aria-label="Search Email">-->
-<!--                    <select th:name="customerType">-->
-<!--                        <option value="" selected>-->
-<!--                            Choose Customer Type-->
-<!--                        </option>-->
-<!--                        <option-->
-<!--                                th:each="item : ${customerTypeList}"-->
-<!--                                th:value="${item.name}" th:text="${item.name}">-->
-<!--                        </option>-->
-<!--                    </select>-->
-<!--                    <button class="btn btn-primary" type="submit">Search</button>-->
-<!--                </form>-->
+                <form th:action="@{/customer/list}" class="d-flex">
+                    <input th:type="text" name="name" class="form-control me-2" type="search" placeholder="Search"
+                           aria-label="Search Name">
+                    <input th:type="text" name="email" class="form-control me-2" type="search" placeholder="Search"
+                           aria-label="Search Email">
+                    <select th:name="customerType">
+                        <option value="" selected>
+                            Choose Customer Type
+                        </option>
+                        <option
+                                th:each="item : ${customerTypeList}"
+                                th:value="${item.name}" th:text="${item.name}">
+                        </option>
+                    </select>
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </form>
             </div>
         </div>
     </nav>
@@ -105,8 +105,8 @@
                 <th scope="col">Email</th>
                 <th scope="col">Address</th>
                 <th scope="col">Customer Type</th>
-<!--                <th scope="col" sec:authorize="hasRole('ADMIN')">Edit</th>-->
-<!--                <th scope="col" sec:authorize="hasRole('ADMIN')">Delete</th>-->
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
             </tr>
             </thead>
             <tbody>
@@ -122,9 +122,39 @@
                 <td th:text="${customer.email}"></td>
                 <td th:text="${customer.address}"></td>
                 <td th:text="${customer.customerType.name}"></td>
+                <td><a role="button" class="btn btn-primary" th:href="@{/customer/edit?id=__${customer.id}__}">Edit</a>
+                </td>
+                <td>
+                    <button type="button" th:attr="onclick=|infoDelete('${customer.id}','${customer.name}')|"
+                            class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Delete
+                    </button>
+                </td>
             </tr>
             </tbody>
         </table>
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <form th:action="@{/customer/delete}" method="post">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Xóa Blog</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="id" name="id">
+                            Do you want to delete this <p style="font-weight: bold; color: red; display: inline"
+                                                          id="deleteName"></p> customer ?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                            <button type="submit" class="btn btn-danger">Xóa</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
         <nav aria-label="..." class="justify-content-center d-flex">
             <ul class="pagination">
                 <li class="page-item">
@@ -250,5 +280,11 @@
     </div>
 </footer>
 </body>
+<script th:inline="javascript">
+    function infoDelete(id, name) {
+        document.getElementById("id").value = id;
+        document.getElementById("deleteName").innerText = name;
+    }
+</script>
 </html>
 </html>

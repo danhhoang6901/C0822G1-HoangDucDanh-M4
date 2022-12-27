@@ -12,10 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -30,9 +27,16 @@ public class CustomerController {
     private ICustomerTypeService customerTypeService;
 
     @GetMapping("/list")
-    public String list(@PageableDefault(size = 5) Pageable pageable, Model model) {
-        Page<Customer> customers = customerService.findAll(pageable);
-        model.addAttribute("customers", customers);
+    public String list(@PageableDefault(size = 5) Pageable pageable, @RequestParam(value = "name", defaultValue = "") String name,
+                       @RequestParam(value = "email", defaultValue = "") String email,
+                       @RequestParam(value = "customerType", defaultValue = "") String customerType, Model model) {
+//        Page<Customer> customers = customerService.findAll(pageable);
+//        model.addAttribute("customers", customers);
+        model.addAttribute("name", name);
+        model.addAttribute("email", email);
+        model.addAttribute("customerType", customerType);
+        model.addAttribute("customers", customerService.list(name, email, customerType, pageable));
+        model.addAttribute("customerTypeList", customerTypeService.findAll());
         return "/customer/list";
     }
 
@@ -51,6 +55,33 @@ public class CustomerController {
         BeanUtils.copyProperties(customerDto, customer);
         customerService.save(customer);
         redirectAttributes.addFlashAttribute("msg", "Successfully added new");
+        return "redirect:/customer/list";
+    }
+
+    @GetMapping("/edit")
+    public String formEditCustomer(@RequestParam("id") int id, Model model) {
+        List<CustomerType> customerTypes = customerTypeService.findAll();
+        Customer customer = customerService.findById(id);
+        CustomerDto customerDto = new CustomerDto();
+        BeanUtils.copyProperties(customer, customerDto);
+        model.addAttribute("customerDto", customerDto);
+        model.addAttribute("customerTypes", customerTypes);
+        return "/customer/edit";
+    }
+
+    @PostMapping("/edit")
+    public String editCustomer(@ModelAttribute("customerDto") CustomerDto customerDto, RedirectAttributes redirectAttributes) {
+        Customer customer = new Customer();
+        BeanUtils.copyProperties(customerDto, customer);
+        customerService.save(customer);
+        redirectAttributes.addFlashAttribute("msg", "Update successful");
+        return "redirect:/customer/list";
+    }
+
+    @PostMapping("/delete")
+    public String deleteCustomer(@RequestParam("id") int id, RedirectAttributes redirectAttributes) {
+        customerService.delete(id);
+        redirectAttributes.addFlashAttribute("msg", "Delete successfully");
         return "redirect:/customer/list";
     }
 }

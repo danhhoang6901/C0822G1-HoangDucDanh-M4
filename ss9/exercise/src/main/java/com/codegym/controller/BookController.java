@@ -82,9 +82,9 @@ public class BookController {
             orderService.save(orderBook);
             book.setQuantity(book.getQuantity() + 1);
             bookService.save(book);
-            redirectAttributes.addFlashAttribute("mess", "Ban Da Tra Sach Thanh Cong");
+            redirectAttributes.addFlashAttribute("msg1", "Ban Da Tra Sach Thanh Cong");
             return "redirect:/list";
         }
-        return "error";
+        throw new Exception();
     }
 }

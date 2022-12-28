@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Customer</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+          crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="vh-100">
+  <nav class="navbar navbar-light bg-light" style="height: 20%">
+    <div class="container-fluid">
+      <img src="https://cdn.azvd.asia/images/furama/logo-m.png" alt="" width="200" height="100"
+           class="d-inline-block align-text-top">
+      <h1>FURAMA</h1>
+    </div>
+  </nav>
+  <nav class="navbar navbar-expand-lg navbar-light bg-secondary" style="height: 10%">
+    <div class="container-fluid" style="margin-left: 40px">
+      <a class="navbar-brand" th:href="@{/}">Home</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1"
+               role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Employee
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown1">
+              <li><a class="dropdown-item">List Employee</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+               role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Customer
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" th:href="@{/customer/list}">List Customer</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a style="font-weight: bold" class="nav-link dropdown-toggle" href="#" id="navbarDropdown2"
+               role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Facility
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
+              <li><a class="dropdown-item" th:href="@{/facility/list}">List Facility</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown4" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Contract
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown4">
+              <li><a class="dropdown-item">List Contract</a></li>
+            </ul>
+          </li>
+        </ul>
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button style="color: black;background: green" class="btn btn-outline-success" type="submit">
+            Search
+          </button>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div style="height: 70%">
+    <div align="center">
+      <h1>Create Facility</h1>
+      <a role="button" class="btn btn-primary" th:href="@{/facility/list}">Back list</a>
+    </div>
+    <form th:method="post" th:action="@{/facility/create}" th:object="${facilityDto}">
+      <input th:type="hidden" th:field="*{id}">
+      <div class="mb-3">
+        <label>Facility Type: </label>
+        <select id="change" onchange="facility()" th:field="${facilityDto.facilityType}">
+          <option value="" selected>Select Facility Type</option>
+          <option th:each="ft : ${facilityTypes}" th:value="${ft.id}"
+                  th:text="${ft.name}"></option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label>Name:</label>
+        <input class="form-control" th:type="text"
+               th:field="*{name}">
+      </div>
+      <div class="mb-3">
+        <label>Area:</label>
+        <input class="form-control" th:type="number" th:field="*{area}">
+      </div>
+      <div class="mb-3">
+        <label>Cost:</label>
+        <input th:type="number" th:field="*{cost}" class="form-control" }>
+      </div>
+      <div class="mb-3">
+        <label>Max People:</label>
+        <input th:type="number" th:field="*{maxPeople}" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label>Rent Type:</label>
+        <select th:field="${facilityDto.rentType}">
+          <option th:each="rt : ${rentTypes}" th:value="${rt.id}"
+                  th:text="${rt.name}"></option>
+        </select>
+      </div>
+      <div id="sr" class="mb-3">
+        <label>Standard Room:</label>
+        <input th:type="text" class="form-control" th:field="*{standardRoom}">
+      </div>
+      <div id="doc" class="mb-3">
+        <label>Description Other Convenience:</label>
+        <input th:type="text" class="form-control" th:field="*{descriptionOtherConvenience}">
+      </div>
+      <div id="pa" class="mb-3">
+        <label>Pool Area: </label>
+        <input th:type="number" class="form-control" th:field="*{poolArea}">
+      </div>
+      <div id="nof" class="mb-3">
+        <label>Number Of Floors: </label>
+        <input class="form-control" th:type="number" th:field="*{numberOfFloors}">
+      </div>
+      <div id="ff" class="mb-3">
+        <label>Facility Free: </label>
+        <input class="form-control" th:type="text" th:field="*{facilityFree}">
+      </div>
+      <button class="btn btn-primary" th:type="submit">Create</button>
+    </form>
+  </div>
+</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<script>
+  function facility() {
+    var x = document.getElementById("change").value;
+    switch (x) {
+      case '1':
+        document.getElementById("sr").style.display = "";
+        document.getElementById("doc").style.display = "";
+        document.getElementById("pa").style.display = "";
+        document.getElementById("nof").style.display = "";
+        document.getElementById("ff").style.display = "none";
+        break;
+      case '2':
+        document.getElementById("sr").style.display = "";
+        document.getElementById("doc").style.display = "";
+        document.getElementById("pa").style.display = "none";
+        document.getElementById("nof").style.display = "";
+        document.getElementById("ff").style.display = "none";
+        break;
+      case '3':
+        document.getElementById("sr").style.display = "none";
+        document.getElementById("doc").style.display = "none";
+        document.getElementById("pa").style.display = "none";
+        document.getElementById("nof").style.display = "none";
+        document.getElementById("ff").style.display = "";
+        break;
+      default:
+        document.getElementById("sr").style.display = "";
+        document.getElementById("doc").style.display = "";
+        document.getElementById("pa").style.display = "";
+        document.getElementById("nof").style.display = "";
+        document.getElementById("ff").style.display = "";
+    }
+  }
+</script>
+</html>

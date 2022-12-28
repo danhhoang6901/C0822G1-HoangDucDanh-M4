@@ -51,11 +51,21 @@ public class CustomerController {
 
     @PostMapping("/create")
     public String createCustomer(@ModelAttribute("customerDto") CustomerDto customerDto, RedirectAttributes redirectAttributes) {
-        Customer customer = new Customer();
-        BeanUtils.copyProperties(customerDto, customer);
-        customerService.save(customer);
-        redirectAttributes.addFlashAttribute("msg", "Successfully added new");
+        List<Customer> customers = customerService.findAll();
+        for (Customer customer1 : customers) {
+            if (customerDto.getEmail().equals(customer1.getEmail())) {
+                redirectAttributes.addFlashAttribute("msg", "New add failed");
+                break;
+            } else {
+                Customer customer = new Customer();
+                BeanUtils.copyProperties(customerDto, customer);
+                customerService.save(customer);
+                redirectAttributes.addFlashAttribute("msg", "Successfully added new");
+                return "redirect:/customer/list";
+            }
+        }
         return "redirect:/customer/list";
+
     }
 
     @GetMapping("/edit")

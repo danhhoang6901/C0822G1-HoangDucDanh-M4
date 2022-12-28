@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách sản phẩm</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<div align="center">
+    <h1>Danh sách sản phẩm</h1>
+    <a th:href="@{/cart}" role="button" class="btn btn-primary">Giỏ hàng</a>
+</div>
+<hr>
+    <div class="row">
+        <div class="col-md-8">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Tên sản phẩm</th>
+                    <th>Ảnh</th>
+                    <th>Mô tả</th>
+                    <th>Giá</th>
+                    <th>Chức năng</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="product : ${products}">
+                    <td th:text="${product.name}"></td>
+                    <td>
+                        <a th:href="@{/shop/detail/{id}(id=${product.id})}">
+                            <img th:src="@{${product.image}}" style="height: 100px">
+                        </a>
+                    </td>
+                    <td th:text="${product.description}"></td>
+                    <td th:text="${product.price}"></td>
+                    <td>
+                        <a th:href="@{/shop/detail/{id}(id=${product.id})}" role="button" class="btn btn-primary">Chi
+                            tiết</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4" th:if="${historyProduct}">
+            <div class="card sticky-top border-0">
+                <img th:src="${historyProduct.image}" class="card-img-top">
+                <div class="card-body">
+                    <h4 class="card-title" th:text="${historyProduct.name}"></h4>
+                    <p class="card-text" th:text="${historyProduct.price}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

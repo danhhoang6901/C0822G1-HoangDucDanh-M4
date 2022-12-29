@@ -1,17 +1,18 @@
 package com.codegym.controller;
 
-import com.codegym.dto.CustomerDto;
+import com.codegym.dto.customer.CustomerDto;
 import com.codegym.model.customer.Customer;
 import com.codegym.model.customer.CustomerType;
 import com.codegym.service.customer.ICustomerService;
 import com.codegym.service.customer.ICustomerTypeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -50,10 +51,15 @@ public class CustomerController {
     }
 
     @PostMapping("/create")
-    public String createCustomer(@ModelAttribute("customerDto") CustomerDto customerDto, RedirectAttributes redirectAttributes) {
+    public String createCustomer(@Validated @ModelAttribute("customerDto") CustomerDto customerDto, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
         List<Customer> customers = customerService.findAll();
+        if (bindingResult.hasErrors()) {
+            List<CustomerType> customerTypes = customerTypeService.findAll();
+            model.addAttribute("customerTypes", customerTypes);
+            return "/customer/create";
+        }
         for (Customer customer1 : customers) {
-            if (customerDto.getEmail().equals(customer1.getEmail())) {
+            if (customerDto.getEmail().equals(customer1.getEmail()) || customerDto.getIdCard().equals(customer1.getIdCard()) || customerDto.getPhoneNumber().equals(customer1.getPhoneNumber())) {
                 redirectAttributes.addFlashAttribute("msg", "New add failed");
                 break;
             } else {

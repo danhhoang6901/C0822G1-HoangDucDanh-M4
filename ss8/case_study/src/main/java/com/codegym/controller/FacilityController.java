@@ -1,6 +1,6 @@
 package com.codegym.controller;
 
-import com.codegym.dto.FacilityDto;
+import com.codegym.dto.facility.FacilityDto;
 import com.codegym.model.facility.Facility;
 import com.codegym.model.facility.FacilityType;
 import com.codegym.model.facility.RentType;

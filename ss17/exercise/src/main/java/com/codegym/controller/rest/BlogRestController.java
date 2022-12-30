@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("blogs")
+@CrossOrigin("*")
 public class BlogRestController {
     @Autowired
     private IBlogService blogService;
@@ -42,5 +43,10 @@ public class BlogRestController {
         blog.setStatus(true);
         blogService.save(blog);
         return new ResponseEntity<>(blog, HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Blog>> search(@RequestParam String title) {
+        return new ResponseEntity<>(blogService.findByName(title), HttpStatus.OK);
     }
 }

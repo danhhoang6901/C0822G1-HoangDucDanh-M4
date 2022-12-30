@@ -47,14 +47,14 @@
         <td th:text="${blog.author}"></td>
         <td><a th:href="@{/blog/edit?id=__${blog.id}__}" role="button" class="btn btn-primary">Chỉnh sửa</a></td>
                 <td><a th:href="@{/blog/view?id=__${blog.id}__}" role="button" class="btn btn-primary">Chi tiết</a></td>
-        <td><!-- Button trigger modal -->
+<!--        <td>&lt;!&ndash; Button trigger modal &ndash;&gt;-->
 <!--            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal1">-->
 <!--                Chi tiết-->
 <!--            </button>-->
 
             <!-- Modal -->
 
-        </td>
+<!--        </td>-->
         <td>
             <button type="button" th:attr="onclick=|infoDelete('${blog.id}','${blog.title}')|"
                     class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">

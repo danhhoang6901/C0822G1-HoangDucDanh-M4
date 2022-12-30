@@ -46,7 +46,11 @@ public class BlogService implements IBlogService {
         Blog blog = this.findById(id);
         blog.setStatus(true);
         this.blogRepository.save(blog);
-//        blogRepository.remove(id);
+    }
+
+    @Override
+    public List<Blog> findByName(String title) {
+        return blogRepository.findByName(title);
     }
 
 }

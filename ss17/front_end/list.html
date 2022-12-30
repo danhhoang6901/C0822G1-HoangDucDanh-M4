@@ -10,19 +10,88 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
+<input type="text" id="search">
+<button class="btn btn-primary" id="searchbtn">Search</button>
 <table class="table">
     <thead>
     <tr>
-        <th scope="col">#</th>
-        <th scope="col">First</th>
-        <th scope="col">Last</th>
-        <th scope="col">Handle</th>
+        <th scope="col">STT</th>
+        <th scope="col">Tiêu đề</th>
+        <th scope="col">Thể loại</th>
+        <th scope="col">Ngày đăng</th>
+        <th scope="col">Tác giả</th>
     </tr>
     </thead>
-    <tbody>
+    <tbody id="body">
     </tbody>
 </table>
-<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+<button class="btn btn-outline-primary" type="button" id="more">Show more</button>
+<button class="btn btn-outline-primary" type="button" id="less">Show less</button>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script
+        src="https://code.jquery.com/jquery-3.6.1.js"
+        integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
         crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function () {
+        function blog() {
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:8080/blogs",
+                success: function (data) {
+                    let myTable = "";
+                    for (let i = 0; i < data.length; i++) {
+                        myTable +=
+                            `<tr>
+                             <th scope="row">${i + 1}</th>
+                             <td>${data[i].title}</td>
+                             <td>${data[i].category.name}</td>
+                             <td>${data[i].dateSubmitted}</td>
+                             <td>${data[i].author}</td>
+                        `
+                    }
+                    $("#body").html(myTable)
+                }
+
+            });
+
+        }
+
+        blog();
+
+        $("#searchbtn").click(function () {
+            let txtSearch = $("#search").val();
+            $.ajax({
+                url: "http://localhost:8080/blogs/search?title=" + txtSearch,
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    $("#body").empty();
+                    let myTable = "";
+                    for (let i = 0; i < data.length; i++) {
+                        myTable +=
+                            `<tr>
+                             <th scope="row">${i + 1}</th>
+                             <td>${data[i].title}</td>
+                             <td>${data[i].category.name}</td>
+                             <td>${data[i].dateSubmitted}</td>
+                             <td>${data[i].author}</td>
+                        `
+                    }
+                    $("#body").html(myTable);
+                }
+            })
+        })
+
+        $("#more").click(function () {
+            $("#body").show();
+        });
+        $("#less").click(function () {
+            $("#body").hide();
+        })
+    })
+
+
+</script>
 </body>
 </html>

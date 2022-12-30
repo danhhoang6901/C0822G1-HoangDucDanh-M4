@@ -20,4 +20,6 @@ public interface IBlogService {
     Blog findById(int id);
 
     void delete(Integer id);
+
+    List<Blog> findByName(String title);
 }

@@ -39,7 +39,7 @@ public class ContractController {
     private ICustomerService customerService;
 
     @GetMapping("/list")
-    public String showListContract(@PageableDefault(size = 3) Pageable pageable, Model model) {
+    public String showListContract(@PageableDefault(size = 4) Pageable pageable, Model model) {
         Page<IContractDto> contracts = contractService.list(pageable);
         model.addAttribute("contracts", contracts);
         model.addAttribute("facilities", facilityService.findAll());

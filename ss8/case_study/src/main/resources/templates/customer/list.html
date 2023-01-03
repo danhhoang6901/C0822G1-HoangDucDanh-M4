@@ -30,12 +30,12 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1"
+                        <a class="nav-link dropdown-toggle"  id="navbarDropdown1"
                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Employee
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown1">
-                            <li><a class="dropdown-item">List Employee</a></li>
+                            <li><a th:href="@{/employee/list}" class="dropdown-item">List Employee</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -89,7 +89,7 @@
     <div style="    height: 70%">
         <div align="center">
             <h1>List Customer</h1>
-            <a th:href="@{/customer/create}" role="button" class="btn btn-primary" sec:authorize="hasRole('ADMIN')">Create
+            <a th:href="@{/customer/create}" role="button" class="btn btn-primary">Create
                 Customer</a>
             <p style="font-weight: bold;color: red" th:text="${msg}"></p>
         </div>
@@ -138,7 +138,7 @@
                 <form th:action="@{/customer/delete}" method="post">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Xóa Blog</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Delete Customer</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">

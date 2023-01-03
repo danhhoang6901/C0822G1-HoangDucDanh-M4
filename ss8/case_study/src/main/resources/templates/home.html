@@ -21,7 +21,7 @@
   </nav>
   <nav class="navbar navbar-expand-lg navbar-light bg-secondary" style="height: 10%">
     <div class="container-fluid" style="margin-left: 40px">
-      <a style="font-weight: bold" class="navbar-brand" href="/home">Home</a>
+      <a style="font-weight: bold" class="navbar-brand" th:href="@{/}">Home</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
               data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
               aria-expanded="false" aria-label="Toggle navigation">
@@ -30,11 +30,11 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item dropdown" >
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle"  id="navbarDropdown1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Employee
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown1">
-              <li><a class="dropdown-item">List Employee</a></li>
+              <li><a th:href="@{/employee/list}" class="dropdown-item">List Employee</a></li>
             </ul>
           </li>
           <li class="nav-item dropdown">
@@ -54,7 +54,7 @@
               <li><a class="dropdown-item" th:href="@{/facility/list}">List Facility</a></li>
             </ul>
           </li>
-          <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
+          <li class="nav-item dropdown" >
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown4"
                role="button"
                data-bs-toggle="dropdown" aria-expanded="false">

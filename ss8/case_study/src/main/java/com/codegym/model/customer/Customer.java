@@ -1,6 +1,7 @@
 package com.codegym.model.customer;
 
 import com.codegym.model.contract.Contract;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -13,8 +14,11 @@ public class Customer {
     private String name;
     private String dateOfBirth;
     private int gender;
+    @Column(unique = true)
     private String idCard;
+    @Column(unique = true)
     private String phoneNumber;
+    @Column(unique = true)
     private String email;
     private String address;
     private boolean status;

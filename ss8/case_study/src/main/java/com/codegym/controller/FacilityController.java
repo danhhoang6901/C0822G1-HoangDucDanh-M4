@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -51,12 +53,21 @@ public class FacilityController {
     }
 
     @PostMapping("/create")
-    public String createFacility(@ModelAttribute("facilityDto") FacilityDto facilityDto, RedirectAttributes redirectAttributes) {
-        Facility facility = new Facility();
-        BeanUtils.copyProperties(facilityDto, facility);
-        facilityService.save(facility);
-        redirectAttributes.addFlashAttribute("msg", "Successfully added new");
-        return "redirect:/facility/list";
+    public String createFacility(@Validated @ModelAttribute("facilityDto") FacilityDto facilityDto, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+        new FacilityDto().validate(facilityDto, bindingResult);
+        if (bindingResult.hasErrors()) {
+            List<FacilityType> facilityTypes = facilityTypeService.findAll();
+            List<RentType> rentTypes = rentTypeService.findAll();
+            model.addAttribute("facilityTypes", facilityTypes);
+            model.addAttribute("rentTypes", rentTypes);
+            return "/facility/create";
+        } else {
+            Facility facility = new Facility();
+            BeanUtils.copyProperties(facilityDto, facility);
+            facilityService.save(facility);
+            redirectAttributes.addFlashAttribute("msg", "Successfully added new");
+            return "redirect:/facility/list";
+        }
     }
 
     @GetMapping("/delete")

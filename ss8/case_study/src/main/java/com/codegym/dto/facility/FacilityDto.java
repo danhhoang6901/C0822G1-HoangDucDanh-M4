@@ -2,9 +2,14 @@ package com.codegym.dto.facility;
 
 import com.codegym.model.facility.FacilityType;
 import com.codegym.model.facility.RentType;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 
-public class FacilityDto {
+import javax.validation.constraints.NotEmpty;
+
+public class FacilityDto implements Validator {
     private int id;
+    @NotEmpty(message = "Không được để trống")
     private String name;
     private int area;
     private double cost;
@@ -129,5 +134,20 @@ public class FacilityDto {
 
     public void setFacilityFree(String facilityFree) {
         this.facilityFree = facilityFree;
+    }
+
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return false;
+    }
+
+    @Override
+    public void validate(Object target, Errors errors) {
+        FacilityDto facilityDto = (FacilityDto) target;
+
+        char x = facilityDto.getName().charAt(0);
+        if (x < 'A' || x > 'Z') {
+            errors.rejectValue("name", "name", "Ký tự đầu tiên của mỗi từ phải viết hoa");
+        }
     }
 }

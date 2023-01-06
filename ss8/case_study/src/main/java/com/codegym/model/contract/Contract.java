@@ -15,6 +15,7 @@ public class Contract {
     private String startDate;
     private String endDate;
     private double deposit;
+    private boolean status;
 
     @ManyToOne
     @JoinColumn(name = "employee_id", referencedColumnName = "id")
@@ -34,15 +35,12 @@ public class Contract {
     public Contract() {
     }
 
-    public Contract(int id, String startDate, String endDate, double deposit, Employee employee, Customer customer, Facility facility, Set<ContractDetail> contractDetailSet) {
-        this.id = id;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.deposit = deposit;
-        this.employee = employee;
-        this.customer = customer;
-        this.facility = facility;
-        this.contractDetailSet = contractDetailSet;
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     public Set<ContractDetail> getContractDetailSet() {

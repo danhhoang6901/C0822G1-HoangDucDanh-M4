@@ -8,27 +8,26 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface IContractRepository extends JpaRepository<Contract, Integer> {
-    @Query(value = "SELECT  f.`name` AS facilityName,\n" +
-            "             c.`name` AS customerName,\n" +
-            "             e.`name` AS employeeName,\n" +
-            "       ct.id AS id,\n" +
-            "                 ct.start_date AS startDate,\n" +
-            "                   ct.end_date AS endDate,\n" +
-            "                    ct.deposit,\n" +
-            "                   (IFNULL(SUM(cd.quantity * af.cost), 0) + IFNULL(af.cost,0)) AS total\n" +
-            "                FROM\n" +
-            "                contract ct\n" +
-            "                       LEFT JOIN\n" +
-            "                    facility f ON ct.facility_id = f.id\n" +
-            "                      LEFT JOIN\n" +
-            "                  contract_detail cd ON ct.id = cd.contract_id\n" +
-            "                       LEFT JOIN\n" +
-            "                   attach_facility af ON cd.attach_facility_id = f.id\n" +
-            "                        LEFT JOIN\n" +
-            "                customer c ON ct.customer_id = c.id\n" +
-            "                        LEFT JOIN\n" +
-            "                employee e ON ct.employee_id = e.id\n" +
-            "                GROUP BY ct.id",
-            nativeQuery = true, countQuery = "select count(*) from contract")
-    Page<IContractDto> list(Pageable pageable);
+
+    @Query(value = "SELECT c.id, c.start_date " +
+            "as startDate, c.end_date " +
+            "as endDate, cu.name " +
+            "as customerName, " +
+            "f.name " +
+            "as facilityName, (sum(ifnull(cd.quantity,0) * ifnull(af.cost,0)) + f.cost) " +
+            "AS totalAmount, c.deposit " +
+            "FROM `contract` c " +
+            "LEFT JOIN contract_detail cd " +
+            "ON c.id=cd.contract_id " +
+            "LEFT JOIN attach_facility af " +
+            "ON cd.attach_facility_id = af.id " +
+            "LEFT  JOIN facility f " +
+            "ON c.facility_id = f.id " +
+            "JOIN customer cu " +
+            "ON cu.id = c.customer_id " +
+            "WHERE c.status = false " +
+            "GROUP BY c.id " +
+            "ORDER BY c.id desc",
+            nativeQuery = true)
+    Page<IContractDto> showList(Pageable pageable);
 }

@@ -51,7 +51,7 @@ public class CustomerController {
     }
 
     @PostMapping("/create")
-    public String createCustomer(@Validated @ModelAttribute("customerDto") CustomerDto customerDto, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+    public String createCustomer(@Validated @ModelAttribute("customerDto") CustomerDto customerDto, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) throws Exception {
         List<Customer> customers = customerService.findAll();
         if (bindingResult.hasErrors()) {
             List<CustomerType> customerTypes = customerTypeService.findAll();
@@ -61,17 +61,15 @@ public class CustomerController {
         for (Customer customer1 : customers) {
             if (customerDto.getEmail().equals(customer1.getEmail()) || customerDto.getIdCard().equals(customer1.getIdCard()) || customerDto.getPhoneNumber().equals(customer1.getPhoneNumber())) {
                 redirectAttributes.addFlashAttribute("msg", "New add failed");
-                break;
             } else {
                 Customer customer = new Customer();
                 BeanUtils.copyProperties(customerDto, customer);
                 customerService.save(customer);
                 redirectAttributes.addFlashAttribute("msg", "Successfully added new");
-                return "redirect:/customer/list";
             }
+            break;
         }
         return "redirect:/customer/list";
-
     }
 
     @GetMapping("/edit")

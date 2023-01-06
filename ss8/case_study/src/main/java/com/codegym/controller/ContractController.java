@@ -40,33 +40,15 @@ public class ContractController {
 
     @GetMapping("/list")
     public String showListContract(@PageableDefault(size = 4) Pageable pageable, Model model) {
-        Page<IContractDto> contracts = contractService.list(pageable);
-        model.addAttribute("contracts", contracts);
-        model.addAttribute("facilities", facilityService.findAll());
-        model.addAttribute("customers", customerService.findAll());
-        model.addAttribute("contractDetail", contractDetailService.findAll());
-        model.addAttribute("attachFacility", attachFacilityService.findAll());
-        model.addAttribute("contractDto", new ContractDto());
-        model.addAttribute("contract",new Contract());
+        Page<IContractDto> contractList = contractService.showList(pageable);
+        model.addAttribute("contractList", contractList);
         return "/contract/list";
-    }
-
-    @GetMapping("/create")
-    public String showFormCreate(Model model) {
-        model.addAttribute("contract",new Contract());
-        model.addAttribute("contractDto", new ContractDto());
-        model.addAttribute("facilities", facilityService.findAll());
-        model.addAttribute("customers", customerService.findAll());
-        model.addAttribute("contractDetail", contractDetailService.findAll());
-        model.addAttribute("attachFacility", attachFacilityService.findAll());
-        return "redirect:/contract/list";
     }
 
     @PostMapping("/create")
     public String createContract(@ModelAttribute("contractDto") ContractDto contractDto, RedirectAttributes redirectAttributes) {
         Contract contract = new Contract();
         BeanUtils.copyProperties(contractDto, contract);
-        contractService.save(contract);
         redirectAttributes.addFlashAttribute("msg", "Successfully added new");
         return "redirect:/contract/list";
     }

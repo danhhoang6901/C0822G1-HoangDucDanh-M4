@@ -82,23 +82,40 @@
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addContract">
                 Create Contract
             </button>
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            <div class="modal fade" id="addContract" tabindex="-1" aria-labelledby="exampleModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Create Contract</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <form th:action="@{/contract/create}" th:object="${contractDto}" th:method="post">
                             <div class="modal-body">
-                                <label>Start Date: </label>
+                                <label style="font-weight: bold">Start Date: </label>
+                                <input class="form-control" th:field="*{startDate}" th:type="date" id="dateStart">
+                                <label style="font-weight: bold">End Date: </label>
+                                <input class="form-control" th:field="*{endDate}" th:type="date" id="dateEnd">
+                                <label style="font-weight: bold">Name Facility: </label>
+                                <select class="form-control" id="name" th:field="*{facility}">
+                                    <option value="">--Choose--</option>
+                                    <option th:each="ft : ${facility}" th:value="${ft.id}"
+                                            th:text="${ft.name}"></option>
+                                </select>
+                                <label style="font-weight: bold">Name Customer: </label>
+                                <select class="form-control" id="nameCus" th:field="*{customer}">
+                                    <option value="">--Choose--</option>
+                                    <option th:each="cu : ${customer}" th:value="${cu.id}"
+                                            th:text="${cu.name}"></option>
+                                </select>
+                                <label style="font-weight: bold">Deposit: </label>
+                                <input class="form-control" th:field="*{deposit}" th:type="number">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button id="save" type="submit" class="btn btn-primary">Save</button>
                             </div>
                         </form>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -127,17 +144,53 @@
                 <td th:text="${contract.getDeposit()}"></td>
                 <td th:text="${contract.getTotalAmount()}"></td>
                 <td>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <button th:onclick="|idContractDetail(${contract.getId()})|" type="button" class="btn btn-primary"
+                            data-bs-toggle="modal" data-bs-target="#addContractDetail">
                         +
                     </button>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#attachFacilityModal">
+                    <!--                    <button  type="button" class="btn btn-primary" data-bs-toggle="modal"-->
+                    <!--                            data-bs-target="#attachFacility">-->
+                    <!--                        List of included services-->
+                    <!--                    </button>-->
+                    <button th:attr="onclick=|showAttachDetail('${contract.getId()}')|" type="button"
+                            class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         List of included services
                     </button>
+
                 </td>
             </tr>
             </tbody>
         </table>
+        <!--        Thêm mới dịch vụ đi kèm-->
+        <div class="modal fade" id="addContractDetail" tabindex="-1" aria-labelledby="exampleModalLabel1"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel1">Create Contract Detail</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form th:action="@{/contract/contractDetail}" th:object="${contractDetailDto}" th:method="post">
+                        <div class="modal-body">
+                            <input th:type="hidden" th:field="*{id}">
+                            <label style="font-weight: bold">Name Contract Detail: </label>
+                            <select class="form-control" th:field="*{attachFacility}">
+                                <option value="">--Choose--</option>
+                                <option th:each="at : ${attachFacilities}" th:value="${at.id}"
+                                        th:text="${at.name}"></option>
+                            </select>
+                            <label style="font-weight: bold">Quantity: </label>
+                            <input class="form-control" th:type="number" id="quantity" th:field="*{quantity}">
+                            <input th:type="hidden" id="idInput" th:field="*{contract}">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
         <nav aria-label="..." class="justify-content-center d-flex">
             <ul class="pagination">
                 <li class="page-item">
@@ -165,7 +218,7 @@
                 </li>
 
                 <li class="page-item">
-                    <a class="page-link" th:href="@{'/contract/list'(page=${contractList.number+1})}"
+                    <a class="page-link" th:href="@{'/contract/list'(page=${contractList.number+1} )}"
                        th:if="${contractList.hasNext()}">&raquo;</a>
                 </li>
                 <li class="page-item disabled" th:unless="${contractList.hasNext()}">
@@ -173,6 +226,23 @@
                 </li>
             </ul>
         </nav>
+        <!--        Hiện thị dịch vụ đi kèm-->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Attach Facility</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <table id="showAttach"></table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <footer class="text-center text-lg-start bg-light text-muted">
@@ -262,7 +332,47 @@
         <a class="text-reset fw-bold" href="https://mdbootstrap.com/">MDBootstrap.com</a>
     </div>
 </footer>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script>
+    function showAttachDetail(id) {
+        $.ajax({
+            url: "http://localhost:8080/attach-facilities/" + id,
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                if (data.length > 0) {
+                    // $("#note").hide();
+                    let tr = [];
+
+                    tr.push("<tr>");
+                    tr.push("<th>" + "Name Attach Facility" + "</th>");
+                    // tr.push("<th class='px-5'>" + "Đơn vị" + "</th>");
+                    tr.push("<th class='text-center'>" + "Quantity" + "</th>");
+                    tr.push("<th class='text-center'>" + "Cost" + "</th>");
+                    tr.push("<th class='text-center'>" + "Total Money" + "</th>");
+                    tr.push("</tr>");
+
+                    for (let i = 0; i < data.length; i++) {
+                        tr.push("<tr>");
+                        tr.push("<td class='h6'>" + data[i].attachName + "</td>");
+                        tr.push("<td class='px-5'>" + data[i].totalQuantity + "</td>");
+                        tr.push("<td class='text-center'>" + data[i].cost + "</td>");
+                        tr.push("<td class='text-center'>" + data[i].totalMoney + "</td>");
+                        tr.push("</tr>");
+                    }
+                    $("#showAttach").html(tr.join(""));
+                }
+            }
+        })
+    }
+
+</script>
+<script th:inline="javascript">
+    function idContractDetail(id) {
+        document.getElementById("idInput").value = id;
+    }
+
+</script>
 </html>
 </html>

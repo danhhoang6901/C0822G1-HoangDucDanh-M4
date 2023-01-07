@@ -1,6 +1,8 @@
 package com.codegym.dto.contract;
 
 public interface IContractDto {
+    int getId();
+
     String getStartDate();
 
     String getEndDate();

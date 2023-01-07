@@ -31,13 +31,10 @@ public class CustomerController {
     public String list(@PageableDefault(size = 5) Pageable pageable, @RequestParam(value = "name", defaultValue = "") String name,
                        @RequestParam(value = "email", defaultValue = "") String email,
                        @RequestParam(value = "customerType", defaultValue = "") String customerType, Model model) {
-//        Page<Customer> customers = customerService.findAll(pageable);
-//        model.addAttribute("customers", customers);
         model.addAttribute("name", name);
         model.addAttribute("email", email);
         model.addAttribute("customerType", customerType);
         model.addAttribute("customers", customerService.list(name, email, customerType, pageable));
-        model.addAttribute("customerTypeList", customerTypeService.findAll());
         return "/customer/list";
     }
 

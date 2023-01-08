@@ -16,7 +16,7 @@ public class FacilityService implements IFacilityService {
     private IFacilityRepository facilityRepository;
 
     @Override
-    public Page<Facility> list(Pageable pageable, String name, String facilityType) {
+    public Page<Facility> list(Pageable pageable, String name, Integer facilityType) {
         return facilityRepository.list(pageable, name, facilityType);
     }
 
@@ -40,5 +40,10 @@ public class FacilityService implements IFacilityService {
     @Override
     public List<Facility> findAll() {
         return facilityRepository.findAll();
+    }
+
+    @Override
+    public Page<Facility> showList(String name, Pageable pageable) {
+        return facilityRepository.showList(name,pageable);
     }
 }

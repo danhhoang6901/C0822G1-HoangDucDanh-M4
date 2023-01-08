@@ -7,6 +7,7 @@ import com.codegym.service.customer.ICustomerService;
 import com.codegym.service.customer.ICustomerTypeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -31,10 +32,16 @@ public class CustomerController {
     public String list(@PageableDefault(size = 5) Pageable pageable, @RequestParam(value = "name", defaultValue = "") String name,
                        @RequestParam(value = "email", defaultValue = "") String email,
                        @RequestParam(value = "customerType", defaultValue = "") String customerType, Model model) {
+        Page<Customer> customers;
+        if (customerType.equals("")){
+            customers = customerService.listCustomer(name,pageable);
+        }else {
+            customers = customerService.list(name, email, Integer.parseInt(customerType), pageable);
+        }
         model.addAttribute("name", name);
         model.addAttribute("email", email);
         model.addAttribute("customerType", customerType);
-        model.addAttribute("customers", customerService.list(name, email, customerType, pageable));
+        model.addAttribute("customers", customers);
         return "/customer/list";
     }
 

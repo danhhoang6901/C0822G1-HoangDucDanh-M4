@@ -9,6 +9,7 @@ import com.codegym.service.facility.IFacilityTypeService;
 import com.codegym.service.facility.IRentTypeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -35,10 +36,16 @@ public class FacilityController {
     @GetMapping("/list")
     public String showList(@PageableDefault(size = 4) Pageable pageable, @RequestParam(value = "name", defaultValue = "") String name,
                            @RequestParam(value = "facilityType", defaultValue = "") String facilityType, Model model) {
+        Page<Facility> facilities;
+        if (facilityType.equals("")) {
+            facilities = facilityService.showList(name, pageable);
+        } else {
+            facilities = facilityService.list(pageable, name, Integer.parseInt(facilityType));
+        }
         model.addAttribute("name", name);
         model.addAttribute("facilityType", facilityType);
         model.addAttribute("facilityTypeList", facilityTypeService.findAll());
-        model.addAttribute("facilities", facilityService.list(pageable, name, facilityType));
+        model.addAttribute("facilities", facilities);
         return "/facility/list";
     }
 

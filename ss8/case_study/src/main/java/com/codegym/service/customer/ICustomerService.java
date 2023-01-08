@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ICustomerService {
-    Page<Customer> list(String name, String email, String customerType, Pageable pageable);
+    Page<Customer> list(String name, String email, Integer customerType, Pageable pageable);
 
     void save(Customer customer);
 
@@ -23,4 +23,5 @@ public interface ICustomerService {
     Page<Customer> showList(String name,String email, int customerId, Pageable pageable);
 
 
+    Page<Customer> listCustomer(String name, Pageable pageable);
 }

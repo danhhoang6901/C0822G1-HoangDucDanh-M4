@@ -22,7 +22,7 @@ public class CustomerService implements ICustomerService {
     private ICustomerTypeRepository customerTypeRepository;
 
     @Override
-    public Page<Customer> list(String name, String email, String customerType, Pageable pageable) {
+    public Page<Customer> list(String name, String email, Integer customerType, Pageable pageable) {
         return customerRepository.list(pageable, name, email, customerType);
     }
 
@@ -60,5 +60,10 @@ public class CustomerService implements ICustomerService {
             return customerRepository.findByNameContainingAndEmailContaining(name,email,pageable);
         }
         return customerRepository.findByNameContainingAndEmailContainingAndCustomerType(name,email,customerTypeId,pageable);
+    }
+
+    @Override
+    public Page<Customer> listCustomer(String name, Pageable pageable) {
+        return customerRepository.listCustomer(name,pageable);
     }
 }

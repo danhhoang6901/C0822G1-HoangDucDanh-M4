@@ -342,26 +342,44 @@
             dataType: "json",
             success: function (data) {
                 if (data.length > 0) {
-                    // $("#note").hide();
-                    let tr = [];
-
-                    tr.push("<tr>");
-                    tr.push("<th>" + "Name Attach Facility" + "</th>");
-                    // tr.push("<th class='px-5'>" + "Đơn vị" + "</th>");
-                    tr.push("<th class='text-center'>" + "Quantity" + "</th>");
-                    tr.push("<th class='text-center'>" + "Cost" + "</th>");
-                    tr.push("<th class='text-center'>" + "Total Money" + "</th>");
-                    tr.push("</tr>");
-
+                    // let tr = [];
+                    //
+                    // tr.push("<tr>");
+                    // tr.push("<th>" + "Name Attach Facility" + "</th>");
+                    // // tr.push("<th class='px-5'>" + "Đơn vị" + "</th>");
+                    // tr.push("<th class='text-center'>" + "Quantity" + "</th>");
+                    // tr.push("<th class='text-center'>" + "Cost" + "</th>");
+                    // tr.push("<th class='text-center'>" + "Total Money" + "</th>");
+                    // tr.push("</tr>");
+                    //
+                    // for (let i = 0; i < data.length; i++) {
+                    //     tr.push("<tr>");
+                    //     tr.push("<td class='h6'>" + data[i].attachName + "</td>");
+                    //     tr.push("<td class='px-5'>" + data[i].totalQuantity + "</td>");
+                    //     tr.push("<td class='text-center'>" + data[i].cost + "</td>");
+                    //     tr.push("<td class='text-center'>" + data[i].totalMoney + "</td>");
+                    //     tr.push("</tr>");
+                    // }
+                    let table = "";
+                    table +=
+                        `<tr>
+                             <th> Name Attach Facility </th>
+                             <th class="text-center"> Quantity </th>
+                             <th class="text-center"> Cost </th>
+                             <th class="text-center"> Total Money </th>
+                          </tr>
+                        `
                     for (let i = 0; i < data.length; i++) {
-                        tr.push("<tr>");
-                        tr.push("<td class='h6'>" + data[i].attachName + "</td>");
-                        tr.push("<td class='px-5'>" + data[i].totalQuantity + "</td>");
-                        tr.push("<td class='text-center'>" + data[i].cost + "</td>");
-                        tr.push("<td class='text-center'>" + data[i].totalMoney + "</td>");
-                        tr.push("</tr>");
+                        table +=
+                            `<tr>
+                                <td class="h6">${data[i].attachName}</td>
+                                <td class="px-5">${data[i].totalQuantity}</td>
+                                <td class="text-center">${data[i].cost}</td>
+                                <td class="text-center">${data[i].totalMoney}</td>
+                              </tr>
+                            `
                     }
-                    $("#showAttach").html(tr.join(""));
+                    $("#showAttach").html(table);
                 }
             }
         })
